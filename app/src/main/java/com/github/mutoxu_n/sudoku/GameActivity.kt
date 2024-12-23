@@ -19,18 +19,25 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TextSnippet
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -100,6 +107,11 @@ class GameActivity : ComponentActivity() {
                         cursorX = -1
                         cursorY = -1
                     },
+                    onResetClicked = {
+                        board.reset()
+                        cursorX = -1
+                        cursorY = -1
+                    }
                 )
             }
         }
@@ -115,6 +127,7 @@ private fun Screen(
     onCellClicked: (Int, Int) -> Unit = { _, _ -> },
     onNumberClicked: (Int, Int, Int) -> Unit = { _, _, _ -> },
     onIsMemoClicked: (Boolean) -> Unit = {},
+    onResetClicked: () -> Unit = {},
 ) {
     val colorWrite =
         if(isMemo) MaterialTheme.colorScheme.outline
@@ -124,72 +137,117 @@ private fun Screen(
         if(isMemo) MaterialTheme.colorScheme.onSurface
         else MaterialTheme.colorScheme.outline
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-        ,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        SingleChoiceSegmentedButtonRow {
-            SegmentedButton(
-                shape = SegmentedButtonDefaults.itemShape(
-                    index = 0, count = 2,
-                ),
-                onClick = { onIsMemoClicked(false) },
-                selected = !isMemo,
-                label = {
-                    Text(
-                        text = stringResource(R.string.button_write),
-                        color = colorWrite,
-                    )
-                },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        tint = colorWrite,
-                        contentDescription = null,
-                    )
-                }
-            )
-            SegmentedButton(
-                    shape = SegmentedButtonDefaults.itemShape(
-                        index = 1, count = 2,
-                    ),
-                onClick = { onIsMemoClicked(true) },
-                selected = isMemo,
-                label = {
-                    Text(
-                        text = stringResource(R.string.button_note),
-                        color = colorMemo,
-                    )
-                },
-                icon = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Default.TextSnippet,
-                        tint = colorMemo,
-                        contentDescription = null,
-                    )
+
+    var showResetDialog by remember { mutableStateOf(false) }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {},
+                actions = {
+                    OutlinedIconButton(onClick = { showResetDialog = true}) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = null,
+                        )
+                    }
                 }
             )
         }
 
-        Spacer(Modifier.size(5.dp))
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+            ,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            SingleChoiceSegmentedButtonRow {
+                SegmentedButton(
+                    shape = SegmentedButtonDefaults.itemShape(
+                        index = 0, count = 2,
+                    ),
+                    onClick = { onIsMemoClicked(false) },
+                    selected = !isMemo,
+                    label = {
+                        Text(
+                            text = stringResource(R.string.button_write),
+                            color = colorWrite,
+                        )
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            tint = colorWrite,
+                            contentDescription = null,
+                        )
+                    }
+                )
+                SegmentedButton(
+                        shape = SegmentedButtonDefaults.itemShape(
+                            index = 1, count = 2,
+                        ),
+                    onClick = { onIsMemoClicked(true) },
+                    selected = isMemo,
+                    label = {
+                        Text(
+                            text = stringResource(R.string.button_note),
+                            color = colorMemo,
+                        )
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.TextSnippet,
+                            tint = colorMemo,
+                            contentDescription = null,
+                        )
+                    }
+                )
+            }
 
-        SudokuUi(
-            board = board,
-            cursorX = cursorX,
-            cursorY = cursorY,
-            onCellClicked = { x, y -> onCellClicked(x, y) }
-        )
+            Spacer(Modifier.size(5.dp))
 
-        Spacer(Modifier.size(5.dp))
+            SudokuUi(
+                board = board,
+                cursorX = cursorX,
+                cursorY = cursorY,
+                onCellClicked = { x, y -> onCellClicked(x, y) }
+            )
 
-        NumberPad(
-            cell =
-                if(cursorX == -1 || cursorY == -1) null
-                else board.getCell(cursorX, cursorY),
-            onNumberClicked = { x, y, number -> onNumberClicked(x, y, number) },
+            Spacer(Modifier.size(5.dp))
+
+            NumberPad(
+                cell =
+                    if(cursorX == -1 || cursorY == -1) null
+                    else board.getCell(cursorX, cursorY),
+                onNumberClicked = { x, y, number -> onNumberClicked(x, y, number) },
+            )
+        }
+    }
+
+    if(showResetDialog) {
+        AlertDialog(
+            onDismissRequest = { showResetDialog = false },
+            title = { Text(stringResource(R.string.dialog_reset_title)) },
+            text = { Text(stringResource(R.string.dialog_reset_message)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    showResetDialog = false
+                    onResetClicked()
+                }) {
+                    Text(
+                        stringResource(R.string.button_delete),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showResetDialog = false }) {
+                    Text(stringResource(R.string.button_cancel))
+                }
+            }
         )
     }
 }
