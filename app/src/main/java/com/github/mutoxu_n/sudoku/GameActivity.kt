@@ -97,6 +97,8 @@ class GameActivity : ComponentActivity() {
                     },
                     onIsMemoClicked = {
                         isMemo = it
+                        cursorX = -1
+                        cursorY = -1
                     },
                 )
             }
