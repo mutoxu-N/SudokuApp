@@ -114,6 +114,14 @@ private fun Screen(
     onNumberClicked: (Int, Int, Int) -> Unit = { _, _, _ -> },
     onIsMemoClicked: (Boolean) -> Unit = {},
 ) {
+    val colorWrite =
+        if(isMemo) MaterialTheme.colorScheme.outline
+        else MaterialTheme.colorScheme.onSurface
+
+    val colorMemo =
+        if(isMemo) MaterialTheme.colorScheme.onSurface
+        else MaterialTheme.colorScheme.outline
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -131,11 +139,13 @@ private fun Screen(
                 label = {
                     Text(
                         text = stringResource(R.string.button_write),
+                        color = colorWrite,
                     )
                 },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Edit,
+                        tint = colorWrite,
                         contentDescription = null,
                     )
                 }
@@ -149,11 +159,13 @@ private fun Screen(
                 label = {
                     Text(
                         text = stringResource(R.string.button_note),
+                        color = colorMemo,
                     )
                 },
                 icon = {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.TextSnippet,
+                        tint = colorMemo,
                         contentDescription = null,
                     )
                 }
