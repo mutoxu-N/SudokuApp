@@ -59,17 +59,17 @@ private fun Screen(
 
             // easy
             Button(onClick = { onLaunchButtonClicked(Difficulty.EASY) }) {
-                Text(text = "Easy")
+                Text(text = stringResource(R.string.difficulty_easy))
             }
 
             // medium
             Button(onClick = { onLaunchButtonClicked(Difficulty.MEDIUM) }) {
-                Text(text = "Medium")
+                Text(text = stringResource(R.string.difficulty_medium))
             }
 
             // hard
             Button(onClick = { onLaunchButtonClicked(Difficulty.HARD) }) {
-                Text(text = "Hard")
+                Text(text = stringResource(R.string.difficulty_hard))
             }
         }
     }
