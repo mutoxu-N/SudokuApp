@@ -5,6 +5,7 @@ class SudokuCell(value: Int) {
         EMPTY,
         MEMO,
         FIXED,
+        IMMUTABLE,
     }
 
     var type: SudokuCellType = SudokuCellType.EMPTY
@@ -12,11 +13,11 @@ class SudokuCell(value: Int) {
         private set
 
     val number: Int
-        get() = if (type == SudokuCellType.MEMO) 0 else data
+        get() = if (type == SudokuCellType.EMPTY || type == SudokuCellType.MEMO) 0 else data
 
     init {
         if(value != 0) {
-            type = SudokuCellType.FIXED
+            type = SudokuCellType.IMMUTABLE
             data = value
         }
     }
@@ -26,5 +27,4 @@ class SudokuCell(value: Int) {
             if (isMemo) data xor (1 shl value)
             else value
     }
-
 }
