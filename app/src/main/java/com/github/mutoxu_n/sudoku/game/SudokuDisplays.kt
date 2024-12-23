@@ -145,7 +145,7 @@ fun SudokuUiPreview() {
     val board = SudokuBoard(".1...4..7.9...5..2..6....48....4.73.....9...428..7..1...9......86.......3..82....")
     board.put(0, 0, 5, isMemo = false)
     board.put(0, 1, 4, isMemo = true)
-    board.put(0, 1, 6, isMemo = true)
+    board.put(0, 1, 7, isMemo = true)
 
     SudokuTheme {
         Box(contentAlignment = Alignment.Center) {
