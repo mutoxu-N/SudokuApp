@@ -1,6 +1,10 @@
 package com.github.mutoxu_n.sudoku.game
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 class SudokuCell(
     val x: Int,
@@ -14,11 +18,10 @@ class SudokuCell(
         IMMUTABLE,
     }
 
-    var type: SudokuCellType = SudokuCellType.EMPTY
+    var type by mutableStateOf(SudokuCellType.EMPTY)
         private set
 
-    var data: Int = 0
-        private set
+    private var data by mutableIntStateOf(0)
 
     val number: Int
         get() = if (type == SudokuCellType.EMPTY || type == SudokuCellType.MEMO) 0 else data
