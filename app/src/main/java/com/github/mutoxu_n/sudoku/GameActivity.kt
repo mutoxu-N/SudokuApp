@@ -89,6 +89,7 @@ class GameActivity : ComponentActivity() {
                 var cursorX by rememberSaveable { mutableIntStateOf(-1) }
                 var cursorY by rememberSaveable { mutableIntStateOf(-1) }
                 var isMemo by rememberSaveable { mutableStateOf(false) }
+                var showCompletedDialog by rememberSaveable { mutableStateOf(false) }
 
                 Screen(
                     board = board,
@@ -100,7 +101,7 @@ class GameActivity : ComponentActivity() {
                         cursorY = y
                     },
                     onNumberClicked = { x, y, n ->
-                        board.put(x, y, n, isMemo)
+                        showCompletedDialog = board.put(x, y, n, isMemo)
                     },
                     onIsMemoClicked = {
                         isMemo = it
@@ -113,6 +114,20 @@ class GameActivity : ComponentActivity() {
                         cursorY = -1
                     }
                 )
+
+                if (showCompletedDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showCompletedDialog = false },
+                        title = { Text(stringResource(R.string.completed)) },
+                        text = { Text(stringResource(R.string.completed_message)) },
+                        confirmButton = {
+                            TextButton(onClick = { showCompletedDialog = false }) {
+                                Text(stringResource(R.string.close))
+                            }
+                        }
+                    )
+                }
+
             }
         }
     }

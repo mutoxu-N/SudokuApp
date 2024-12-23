@@ -48,6 +48,7 @@ class SudokuBoard(private val problem: String) {
         }
 
         board[posY*9 + posX].setData(value, isMemo)
-        return true
+
+        return board.count { it.number == 0 } == 0
     }
 }

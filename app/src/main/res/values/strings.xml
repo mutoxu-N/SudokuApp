@@ -10,4 +10,7 @@
     <string name="dialog_reset_message">Are you sure to reset board?</string>
     <string name="button_delete">Delete</string>
     <string name="button_cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="completed">Complate!</string>
+    <string name="completed_message">You beat the problem!</string>
 </resources>
