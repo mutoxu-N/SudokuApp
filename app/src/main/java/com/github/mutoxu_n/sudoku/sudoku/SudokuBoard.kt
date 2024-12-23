@@ -1,7 +1,7 @@
-package com.github.mutoxu_n.sudoku.Sudoku
+package com.github.mutoxu_n.sudoku.sudoku
 
 class SudokuBoard(private val problem: String) {
-    private val board = Array(9) { Array(9) { SudokuCell(0) } }
+    val board = Array(9) { Array(9) { SudokuCell(0) } }
 
     init {
         reset()
