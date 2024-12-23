@@ -50,7 +50,7 @@ fun SudokuUi(
                     val l = mutableListOf<SudokuCell>()
                     for (y2 in 0..<3) {
                         for (x2 in 0..<3) {
-                            l.add(board.getCell(y*3+y2, x*3+x2))
+                            l.add(board.getCell(x*3+x2, y*3+y2))
                         }
                     }
 
