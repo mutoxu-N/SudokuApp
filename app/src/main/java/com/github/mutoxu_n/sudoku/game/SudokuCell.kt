@@ -5,7 +5,7 @@ import android.util.Log
 class SudokuCell(
     val x: Int,
     val y: Int,
-    value: Int
+    value: Int,
 ) {
     enum class SudokuCellType {
         EMPTY,
