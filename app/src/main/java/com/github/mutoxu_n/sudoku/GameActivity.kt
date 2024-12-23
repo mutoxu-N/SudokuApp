@@ -1,5 +1,6 @@
 package com.github.mutoxu_n.sudoku
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,11 +18,19 @@ import com.github.mutoxu_n.sudoku.ui.theme.SudokuTheme
 
 class GameActivity : ComponentActivity() {
     companion object {
+        private const val ARG_PROBLEM = "problem"
+
         fun launch(
-            launcher: ActivityResultLauncher<Intent>,
+            context: Context,
+            problem: String,
         ) {
-            val intent = Intent()
-            launcher.launch(intent)
+            val args = Bundle()
+            args.putString(ARG_PROBLEM, problem)
+
+            val intent = Intent(context, GameActivity::class.java)
+            intent.putExtras(args)
+
+            context.startActivity(intent)
         }
     }
 

@@ -26,14 +26,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SudokuTheme {
-                Screen()
+                Screen(
+                    onLaunchButtonClicked = ::launchGame,
+                )
             }
         }
+    }
+
+    private fun launchGame(difficulty: Difficulty) {
+        val stream = resources.openRawResource(difficulty.dataId)
+        val problem = choiceProblem(stream)
+        GameActivity.launch(this@MainActivity, problem)
     }
 }
 
 @Composable
 private fun Screen(
+    onLaunchButtonClicked: (Difficulty) -> Unit = {},
 ) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -49,17 +58,17 @@ private fun Screen(
             )
 
             // easy
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { onLaunchButtonClicked(Difficulty.EASY) }) {
                 Text(text = "Easy")
             }
 
             // medium
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { onLaunchButtonClicked(Difficulty.MEDIUM) }) {
                 Text(text = "Medium")
             }
 
             // hard
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { onLaunchButtonClicked(Difficulty.HARD) }) {
                 Text(text = "Hard")
             }
         }
