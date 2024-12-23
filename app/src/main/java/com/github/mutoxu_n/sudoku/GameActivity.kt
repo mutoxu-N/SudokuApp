@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.TextSnippet
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
@@ -122,11 +121,11 @@ class GameActivity : ComponentActivity() {
                 if (showCompletedDialog) {
                     AlertDialog(
                         onDismissRequest = { showCompletedDialog = false },
-                        title = { Text(stringResource(R.string.completed)) },
-                        text = { Text(stringResource(R.string.completed_message)) },
+                        title = { Text(stringResource(R.string.dialog_completed)) },
+                        text = { Text(stringResource(R.string.dialog_completed_message)) },
                         confirmButton = {
                             TextButton(onClick = { showCompletedDialog = false }) {
-                                Text(stringResource(R.string.close))
+                                Text(stringResource(R.string.button_close))
                             }
                         }
                     )
