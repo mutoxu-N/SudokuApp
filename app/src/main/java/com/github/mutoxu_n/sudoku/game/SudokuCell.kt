@@ -9,6 +9,8 @@ class SudokuCell(value: Int) {
     }
 
     var type: SudokuCellType = SudokuCellType.EMPTY
+        private set
+
     var data: Int = 0
         private set
 
@@ -24,9 +26,26 @@ class SudokuCell(value: Int) {
 
     fun setData(value: Int, isMemo: Boolean = true) {
         if(type == SudokuCellType.IMMUTABLE) return
+        if(type == SudokuCellType.FIXED && isMemo) return
 
-        data =
-            if (isMemo) data xor (1 shl value)
-            else value
+        if(isMemo) {
+            data = data xor (1 shl value)
+            type = SudokuCellType.MEMO
+        } else {
+            data = value
+            type = SudokuCellType.FIXED
+        }
+    }
+
+    fun memoString(): String {
+        var d = data shr 1
+        var s = ""
+        for(i in 1..9) {
+            if(d % 2 == 1) {
+                s += "$i"
+            }
+            d = d shr 1
+        }
+        return s
     }
 }

@@ -1,14 +1,14 @@
 package com.github.mutoxu_n.sudoku.game
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,22 +21,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mutoxu_n.sudoku.ui.theme.SudokuTheme
 
+private val boarderS = 1.dp
+private val boarderM = 3.dp
+
 @Composable
 fun SudokuUi(
     board: SudokuBoard,
 ) {
     Column(
         modifier = Modifier
-            .border(4.dp, MaterialTheme.colorScheme.primary)
-        ,
+            .background(MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        Spacer(modifier = Modifier.size(boarderM))
         for(y in 0..<3) {
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                Spacer(modifier = Modifier.size(boarderM))
                 for(x in 0..<3) {
                     val l = mutableListOf<SudokuCell>()
                     for (y2 in 0..<3) {
@@ -46,7 +50,10 @@ fun SudokuUi(
                     }
 
                     SudokuBlockUi(l.toList())
+                    if(x != 2)
+                        Spacer(modifier = Modifier.size(boarderM))
                 }
+                Spacer(modifier = Modifier.size(boarderM))
             }
         }
     }
@@ -58,9 +65,7 @@ fun SudokuBlockUi(
     block: List<SudokuCell>,
 ) {
     Column(
-        modifier = Modifier
-            .border(2.dp, MaterialTheme.colorScheme.primary)
-        ,
+        modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -71,9 +76,14 @@ fun SudokuBlockUi(
             ) {
                 for (x in 0..<3) {
                     SudokuCellUi(cell = block[y * 3 + x])
+                    if(x != 2)
+                        Spacer(modifier = Modifier.size(boarderS))
                 }
             }
+            if(y != 2)
+                Spacer(modifier = Modifier.size(boarderS))
         }
+        Spacer(modifier = Modifier.size(boarderM))
     }
 }
 
@@ -81,7 +91,7 @@ fun SudokuBlockUi(
 fun SudokuCellUi(
     cell: SudokuCell,
 ) {
-    val width = LocalConfiguration.current.screenWidthDp.dp / 12
+    val width = LocalConfiguration.current.screenWidthDp.dp / 10
 
     Box(
         modifier = Modifier
@@ -93,26 +103,33 @@ fun SudokuCellUi(
                     else -> MaterialTheme.colorScheme.surface
                 }
             )
-            .border(1f.dp, MaterialTheme.colorScheme.primary)
             .padding(1.dp)
         ,
         contentAlignment = Alignment.Center,
     ) {
         when(cell.type) {
-            SudokuCell.SudokuCellType.IMMUTABLE -> {
+            SudokuCell.SudokuCellType.MEMO -> {
                 Text(
-                    text = cell.number.toString(),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
+                    text = cell.memoString(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.outline,
                 )
             }
 
             SudokuCell.SudokuCellType.FIXED -> {
                 Text(
                     text = cell.number.toString(),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onError,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.error,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+
+            SudokuCell.SudokuCellType.IMMUTABLE -> {
+                Text(
+                    text = cell.number.toString(),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -122,17 +139,16 @@ fun SudokuCellUi(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview
 @Composable
 fun SudokuUiPreview() {
     val board = SudokuBoard(".1...4..7.9...5..2..6....48....4.73.....9...428..7..1...9......86.......3..82....")
-    board.put(0, 2, 5, isMemo = false)
+    board.put(0, 0, 5, isMemo = false)
+    board.put(0, 1, 4, isMemo = true)
+    board.put(0, 1, 6, isMemo = true)
 
     SudokuTheme {
-        Box(
-            Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
+        Box(contentAlignment = Alignment.Center) {
             SudokuUi(
                 board
             )
