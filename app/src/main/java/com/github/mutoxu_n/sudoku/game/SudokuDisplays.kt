@@ -129,7 +129,7 @@ fun SudokuCellUi(
                 Text(
                     text = cell.number.toString(),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Bold,
                 )
             }
