@@ -1,17 +1,20 @@
 package com.github.mutoxu_n.sudoku.game
 
 class SudokuBoard(private val problem: String) {
-    val board = Array(9) { Array(9) { SudokuCell(0) } }
+    val board = Array(9) { Array(9) { SudokuCell(-1, -1, -1) } }
 
     init {
         reset()
     }
 
     fun reset() {
-        for (i in 0 until 9) {
-            for (j in 0 until 9) {
-                val c = problem[i * 9 + j]
-                board[i][j] = SudokuCell(c.digitToIntOrNull() ?: 0)
+        for (y in 0 until 9) {
+            for (x in 0 until 9) {
+                val c = problem[y * 9 + x]
+                board[y][x] = SudokuCell(
+                    x, y,
+                    c.digitToIntOrNull() ?: 0
+                )
             }
         }
     }

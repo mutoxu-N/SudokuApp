@@ -1,6 +1,8 @@
 package com.github.mutoxu_n.sudoku.game
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +29,9 @@ private val boarderM = 3.dp
 @Composable
 fun SudokuUi(
     board: SudokuBoard,
+    cursorX: Int = -1,
+    cursorY: Int = -1,
+    onCellClicked: (Int, Int) -> Unit = { _, _ -> },
 ) {
     Column(
         modifier = Modifier
@@ -49,7 +54,12 @@ fun SudokuUi(
                         }
                     }
 
-                    SudokuBlockUi(l.toList())
+                    SudokuBlockUi(
+                        l.toList(),
+                        cursorX,
+                        cursorY,
+                        onCellClicked = { xx, yy -> onCellClicked(xx, yy)},
+                    )
                     if(x != 2)
                         Spacer(modifier = Modifier.size(boarderM))
                 }
@@ -63,6 +73,9 @@ fun SudokuUi(
 @Composable
 fun SudokuBlockUi(
     block: List<SudokuCell>,
+    cursorX: Int = -1,
+    cursorY: Int = -1,
+    onCellClicked: (Int, Int) -> Unit = { _, _ -> },
 ) {
     Column(
         modifier = Modifier,
@@ -75,7 +88,12 @@ fun SudokuBlockUi(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 for (x in 0..<3) {
-                    SudokuCellUi(cell = block[y * 3 + x])
+                    SudokuCellUi(
+                        cell = block[y * 3 + x],
+                        cursorX,
+                        cursorY,
+                        onCellClicked = { xx, yy -> onCellClicked(xx, yy)},
+                    )
                     if(x != 2)
                         Spacer(modifier = Modifier.size(boarderS))
                 }
@@ -90,21 +108,50 @@ fun SudokuBlockUi(
 @Composable
 fun SudokuCellUi(
     cell: SudokuCell,
+    cursorX: Int = -1,
+    cursorY: Int = -1,
+    onCellClicked: (Int, Int) -> Unit = { _, _ -> },
 ) {
     val width = LocalConfiguration.current.screenWidthDp.dp / 10
 
-    Box(
-        modifier = Modifier
-            .width(width)
-            .aspectRatio(1f)
-            .background(
-                when(cell.type) {
-                    SudokuCell.SudokuCellType.IMMUTABLE -> MaterialTheme.colorScheme.primaryContainer
-                    else -> MaterialTheme.colorScheme.surface
+    val modifier =
+        if(cursorX == cell.x && cursorY == cell.y && cell.type != SudokuCell.SudokuCellType.IMMUTABLE) {
+            Modifier
+                .width(width)
+                .aspectRatio(1f)
+                .background(
+                    when(cell.type) {
+                        SudokuCell.SudokuCellType.IMMUTABLE -> MaterialTheme.colorScheme.primaryContainer
+                        else -> MaterialTheme.colorScheme.surface
+                    }
+                )
+                .padding(1.dp)
+                .clickable {
+                    onCellClicked(cell.x, cell.y)
                 }
-            )
-            .padding(1.dp)
-        ,
+                .border(
+                    width = 2.dp,
+                    color = MaterialTheme.colorScheme.error,
+                )
+        } else {
+            Modifier
+                .width(width)
+                .aspectRatio(1f)
+                .background(
+                    when(cell.type) {
+                        SudokuCell.SudokuCellType.IMMUTABLE -> MaterialTheme.colorScheme.primaryContainer
+                        else -> MaterialTheme.colorScheme.surface
+                    }
+                )
+                .padding(1.dp)
+                .clickable {
+                    onCellClicked(cell.x, cell.y)
+                }
+        }
+
+
+    Box(
+        modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
         when(cell.type) {
@@ -150,7 +197,9 @@ fun SudokuUiPreview() {
     SudokuTheme {
         Box(contentAlignment = Alignment.Center) {
             SudokuUi(
-                board
+                board,
+                cursorX = 1,
+                cursorY = 4,
             )
         }
     }

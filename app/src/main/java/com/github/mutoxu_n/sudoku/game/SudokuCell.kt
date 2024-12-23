@@ -1,6 +1,10 @@
 package com.github.mutoxu_n.sudoku.game
 
-class SudokuCell(value: Int) {
+class SudokuCell(
+    val x: Int,
+    val y: Int,
+    value: Int
+) {
     enum class SudokuCellType {
         EMPTY,
         MEMO,
