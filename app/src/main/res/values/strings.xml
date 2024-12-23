@@ -1,16 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
     <string name="app_name">Sudoku</string>
-    <string name="title_activity_game">GameActivity</string>
-    <string name="button_note">Note</string>
-    <string name="button_write">Write</string>
-    <string name="difficulty_easy">Easy</string>
-    <string name="difficulty_medium">Medium</string>
-    <string name="difficulty_hard">Hard</string>
-    <string name="dialog_reset_title">Reset Board</string>
-    <string name="dialog_reset_message">Are you sure to reset board?</string>
-    <string name="button_delete">Delete</string>
+
+    <string name="button_back">Back</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_note">Note</string>
+    <string name="button_reset">Reset</string>
+    <string name="button_write">Write</string>
+
     <string name="close">Close</string>
-    <string name="completed">Complate!</string>
+
+    <string name="completed">Completed!</string>
     <string name="completed_message">You beat the problem!</string>
+
+    <string name="dialog_back_message">Are you sure to back to title screen? Data will be lost!</string>
+    <string name="dialog_back_title">Quit</string>
+    <string name="dialog_reset_message">Are you sure to reset board?</string>
+    <string name="dialog_reset_title">Reset Board</string>
+
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_hard">Hard</string>
+    <string name="difficulty_medium">Medium</string>
+
+    <string name="title_activity_game">GameActivity</string>
 </resources>

@@ -7,8 +7,7 @@ private const val DATA_SIZE = 83
 fun choiceProblem(stream: InputStream): String {
     val size = stream.available()
     val len = size / DATA_SIZE
-//    val idx = (Math.random() * len).toInt()
-    val idx = 0
+    val idx = (Math.random() * len).toInt()
 
     val reader = stream.bufferedReader()
     reader.skip(83L * idx)

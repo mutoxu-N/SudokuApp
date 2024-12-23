@@ -23,12 +23,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.TextSnippet
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Scaffold
@@ -108,6 +111,7 @@ class GameActivity : ComponentActivity() {
                         cursorX = -1
                         cursorY = -1
                     },
+                    onBackClicked = { finish() },
                     onResetClicked = {
                         board.reset()
                         cursorX = -1
@@ -142,6 +146,7 @@ private fun Screen(
     onCellClicked: (Int, Int) -> Unit = { _, _ -> },
     onNumberClicked: (Int, Int, Int) -> Unit = { _, _, _ -> },
     onIsMemoClicked: (Boolean) -> Unit = {},
+    onBackClicked: () -> Unit = {},
     onResetClicked: () -> Unit = {},
 ) {
     val colorWrite =
@@ -153,12 +158,21 @@ private fun Screen(
         else MaterialTheme.colorScheme.outline
 
 
+    var showBackDialog by remember { mutableStateOf(false) }
     var showResetDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {},
+                navigationIcon = {
+                    IconButton(onClick = { showBackDialog = true }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
+                },
                 actions = {
                     OutlinedIconButton(onClick = { showResetDialog = true}) {
                         Icon(
@@ -242,6 +256,30 @@ private fun Screen(
         }
     }
 
+    if(showBackDialog) {
+        AlertDialog(
+            onDismissRequest = { showBackDialog = false },
+            title = { Text(stringResource(R.string.dialog_back_title)) },
+            text = { Text(stringResource(R.string.dialog_back_message)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    showBackDialog = false
+                    onBackClicked()
+                }) {
+                    Text(
+                        stringResource(R.string.button_back),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showBackDialog = false }) {
+                    Text(stringResource(R.string.button_cancel))
+                }
+            }
+        )
+    }
+
     if(showResetDialog) {
         AlertDialog(
             onDismissRequest = { showResetDialog = false },
@@ -253,7 +291,7 @@ private fun Screen(
                     onResetClicked()
                 }) {
                     Text(
-                        stringResource(R.string.button_delete),
+                        stringResource(R.string.button_reset),
                         color = MaterialTheme.colorScheme.error,
                     )
                 }
