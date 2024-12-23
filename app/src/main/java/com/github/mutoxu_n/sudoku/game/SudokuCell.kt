@@ -41,15 +41,25 @@ class SudokuCell(
         }
     }
 
-    fun memoString(): String {
+    fun memo(): Array<Boolean> {
         var d = data shr 1
-        var s = ""
-        for(i in 1..9) {
+        val l = Array(9) {false}
+        for(i in 0..<9) {
             if(d % 2 == 1) {
-                s += "$i"
+                l[i] = true
             }
             d = d shr 1
         }
+        return l
+    }
+
+    fun memoString(): String {
+        val l = memo()
+        var s = ""
+        for(i in 0..<9) {
+            if(l[i]) s += (i + 1).toString()
+        }
         return s
     }
+
 }
