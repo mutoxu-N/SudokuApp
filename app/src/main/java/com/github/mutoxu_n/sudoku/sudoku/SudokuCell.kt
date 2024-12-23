@@ -1,4 +1,4 @@
-package com.github.mutoxu_n.sudoku.Sudoku
+package com.github.mutoxu_n.sudoku.sudoku
 
 class SudokuCell(value: Int) {
     enum class SudokuCellType {
