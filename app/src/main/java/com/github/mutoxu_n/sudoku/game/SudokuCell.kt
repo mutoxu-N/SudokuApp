@@ -1,4 +1,4 @@
-package com.github.mutoxu_n.sudoku.sudoku
+package com.github.mutoxu_n.sudoku.game
 
 class SudokuCell(value: Int) {
     enum class SudokuCellType {
@@ -23,6 +23,8 @@ class SudokuCell(value: Int) {
     }
 
     fun setData(value: Int, isMemo: Boolean = true) {
+        if(type == SudokuCellType.IMMUTABLE) return
+
         data =
             if (isMemo) data xor (1 shl value)
             else value
