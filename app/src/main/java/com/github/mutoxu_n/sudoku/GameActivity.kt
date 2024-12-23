@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.github.mutoxu_n.sudoku
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,8 +23,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TextSnippet
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.TextSnippet
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableIntState
@@ -32,6 +45,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,6 +75,7 @@ class GameActivity : ComponentActivity() {
 
     private var cursorX: Int by mutableIntStateOf(-1)
     private var cursorY: Int by mutableIntStateOf(-1)
+    private var isMemo: Boolean by mutableStateOf(false)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +83,7 @@ class GameActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val problem = intent.getStringExtra(ARG_PROBLEM)!!
+        Log.i("GameActivity", "problem: $problem")
         val board = SudokuBoard(problem)
         setContent {
             SudokuTheme {
@@ -74,19 +91,20 @@ class GameActivity : ComponentActivity() {
                     board = board,
                     cursorX = cursorX,
                     cursorY = cursorY,
-                    onCellClicked = { x, y -> onCellClicked(x, y) },
-                    onNumberClicked = { number -> onNumberClicked(number) }
+                    isMemo = isMemo,
+                    onCellClicked = { x, y ->
+                        cursorX = x
+                        cursorY = y
+                    },
+                    onNumberClicked = { x, y, n ->
+                        board.put(x, y, n, isMemo)
+                    },
+                    onIsMemoClicked = {
+                        isMemo = it
+                    },
                 )
             }
         }
-    }
-
-    private fun onCellClicked(x: Int, y: Int) {
-        cursorX = x
-        cursorY = y
-    }
-
-    private fun onNumberClicked(number: Int) {
     }
 }
 
@@ -95,8 +113,10 @@ private fun Screen(
     board: SudokuBoard,
     cursorX: Int = -1,
     cursorY: Int = -1,
+    isMemo: Boolean = false,
     onCellClicked: (Int, Int) -> Unit = { _, _ -> },
-    onNumberClicked: (Int) -> Unit = {},
+    onNumberClicked: (Int, Int, Int) -> Unit = { _, _, _ -> },
+    onIsMemoClicked: (Boolean) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -105,6 +125,47 @@ private fun Screen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        SingleChoiceSegmentedButtonRow {
+            SegmentedButton(
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = 0, count = 2,
+                ),
+                onClick = { onIsMemoClicked(false) },
+                selected = !isMemo,
+                label = {
+                    Text(
+                        text = stringResource(R.string.button_write),
+                    )
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = null,
+                    )
+                }
+            )
+            SegmentedButton(
+                    shape = SegmentedButtonDefaults.itemShape(
+                        index = 1, count = 2,
+                    ),
+                onClick = { onIsMemoClicked(true) },
+                selected = isMemo,
+                label = {
+                    Text(
+                        text = stringResource(R.string.button_note),
+                    )
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.TextSnippet,
+                        contentDescription = null,
+                    )
+                }
+            )
+        }
+
+        Spacer(Modifier.size(5.dp))
+
         SudokuUi(
             board = board,
             cursorX = cursorX,
@@ -115,16 +176,18 @@ private fun Screen(
         Spacer(Modifier.size(5.dp))
 
         NumberPad(
-            cell = board.board[cursorY][cursorX],
-            onNumberClicked = { number -> onNumberClicked(number) },
+            cell =
+                if(cursorX == -1 || cursorY == -1) null
+                else board.board[cursorY][cursorX],
+            onNumberClicked = { x, y, number -> onNumberClicked(x, y, number) },
         )
     }
 }
 
 @Composable
 private fun NumberPad(
-    cell: SudokuCell? = null,
-    onNumberClicked: (Int) -> Unit = {},
+    cell: SudokuCell?,
+    onNumberClicked: (Int, Int, Int) -> Unit = { _, _, _ -> },
 ) {
     val width = LocalConfiguration.current.screenWidthDp.dp / 10
     val l = cell?.memo()
@@ -132,8 +195,7 @@ private fun NumberPad(
     Column(
         modifier = Modifier
             .background(
-                if(cell == null) MaterialTheme.colorScheme.primaryContainer
-                else MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.primaryContainer
             )
             .border(
                 1.dp,
@@ -151,57 +213,26 @@ private fun NumberPad(
                         .width(width)
                         .aspectRatio(1f)
                         .clickable {
-                            onNumberClicked(i)
+                            cell?.let {
+                                onNumberClicked(it.x, it.y, i)
+                            }
                         }
                     ,
                     contentAlignment = Alignment.Center,
                 ) {
-                    if(cell == null) {
-                        Text(
-                            text = i.toString(),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.outline,
-                        )
 
-                    } else {
-                        when(cell.type) {
-                            SudokuCell.SudokuCellType.MEMO -> {
-                                if(l!![i-1]){
-                                    Text(
-                                        text = i.toString(),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        fontWeight = FontWeight.Bold,
-                                    )
+                    val type = cell?.type ?: SudokuCell.SudokuCellType.EMPTY
+                    when(type) {
+                        SudokuCell.SudokuCellType.MEMO -> {
+                            if(l != null && l[i-1]){
+                                Text(
+                                    text = i.toString(),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    fontWeight = FontWeight.Bold,
+                                )
 
-                                } else {
-                                    Text(
-                                        text = i.toString(),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.outline,
-                                    )
-                                }
-                            }
-
-                            SudokuCell.SudokuCellType.FIXED -> {
-                                if(i == cell.number){
-                                    Text(
-                                        text = i.toString(),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.error,
-                                        fontWeight = FontWeight.Bold,
-                                    )
-
-                                } else {
-                                    Text(
-                                        text = i.toString(),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.outline,
-                                    )
-                                }
-                            }
-
-                            else -> {
+                            } else {
                                 Text(
                                     text = i.toString(),
                                     style = MaterialTheme.typography.bodyLarge,
@@ -210,12 +241,36 @@ private fun NumberPad(
                             }
                         }
 
+                        SudokuCell.SudokuCellType.FIXED -> {
+                            if(cell != null && i == cell.number){
+                                Text(
+                                    text = i.toString(),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.error,
+                                    fontWeight = FontWeight.Bold,
+                                )
+
+                            } else {
+                                Text(
+                                    text = i.toString(),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.outline,
+                                )
+                            }
+                        }
+
+                        else -> {
+                            Text(
+                                text = i.toString(),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.outline,
+                            )
+                        }
                     }
                 }
             }
         }
     }
-
 }
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -231,6 +286,7 @@ private fun ScreenPreview() {
             board,
             cursorX = 0,
             cursorY = 2,
+            isMemo = false,
         )
     }
 }

@@ -1,5 +1,7 @@
 package com.github.mutoxu_n.sudoku.game
 
+import android.util.Log
+
 class SudokuCell(
     val x: Int,
     val y: Int,
@@ -30,15 +32,32 @@ class SudokuCell(
 
     fun setData(value: Int, isMemo: Boolean = true) {
         if(type == SudokuCellType.IMMUTABLE) return
-        if(type == SudokuCellType.FIXED && isMemo) return
+        if(type == SudokuCellType.FIXED && isMemo) {
+            data = 1 shl data
+        }
 
         if(isMemo) {
             data = data xor (1 shl value)
             type = SudokuCellType.MEMO
+
         } else {
-            data = value
-            type = SudokuCellType.FIXED
+            Log.d("setData", "value: $value, number: $number")
+            if(type == SudokuCellType.FIXED && number == value){
+                reset()
+
+            } else {
+                data = value
+                type = SudokuCellType.FIXED
+            }
+
         }
+    }
+
+    fun reset() {
+        if(type == SudokuCellType.IMMUTABLE) return
+        data = 0
+        type = SudokuCellType.EMPTY
+
     }
 
     fun memo(): Array<Boolean> {
