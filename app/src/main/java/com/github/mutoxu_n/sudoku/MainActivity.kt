@@ -6,8 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.github.mutoxu_n.sudoku.ui.theme.SudokuTheme
 
 class MainActivity : ComponentActivity() {
@@ -56,18 +61,35 @@ private fun Screen(
                 style = MaterialTheme.typography.displayLarge,
             )
 
+            Spacer(modifier = Modifier.size(24.dp))
+
             // easy
-            Button(onClick = { onLaunchButtonClicked(Difficulty.EASY) }) {
+            Button(
+                modifier = Modifier
+                    .width(180.dp)
+                ,
+                onClick = { onLaunchButtonClicked(Difficulty.EASY) },
+            ) {
                 Text(text = stringResource(R.string.difficulty_easy))
             }
 
             // medium
-            Button(onClick = { onLaunchButtonClicked(Difficulty.MEDIUM) }) {
+            Button(
+                modifier = Modifier
+                    .width(180.dp)
+                ,
+                onClick = { onLaunchButtonClicked(Difficulty.MEDIUM) },
+            ) {
                 Text(text = stringResource(R.string.difficulty_medium))
             }
 
             // hard
-            Button(onClick = { onLaunchButtonClicked(Difficulty.HARD) }) {
+            Button(
+                modifier = Modifier
+                    .width(180.dp)
+                ,
+                onClick = { onLaunchButtonClicked(Difficulty.HARD) },
+            ) {
                 Text(text = stringResource(R.string.difficulty_hard))
             }
         }
