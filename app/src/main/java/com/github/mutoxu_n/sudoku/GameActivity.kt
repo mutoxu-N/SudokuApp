@@ -86,6 +86,8 @@ class GameActivity : ComponentActivity() {
         Log.i("GameActivity", "problem: $problem")
         val b = SudokuBoard(problem)
 
+
+
         setContent {
             SudokuTheme {
                 val board by remember { mutableStateOf(b) }
@@ -134,6 +136,10 @@ class GameActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    override fun onBackPressed() {
+        if(false) super.onBackPressed()
     }
 }
 
