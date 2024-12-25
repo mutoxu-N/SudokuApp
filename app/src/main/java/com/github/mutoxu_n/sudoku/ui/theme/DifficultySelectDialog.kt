@@ -34,7 +34,7 @@ fun DifficultySelectDialog(
     var problemNum by remember { mutableIntStateOf(0) }
 
     AlertDialog(
-        title = { Text(text = "Select Difficulty") },
+        title = { Text(text = stringResource(R.string.dialog_difficulty_title)) },
         text = {
             Column {
                 SingleChoiceSegmentedButtonRow {
@@ -43,7 +43,7 @@ fun DifficultySelectDialog(
                             shape = SegmentedButtonDefaults.itemShape(index, Difficulty.entries.size),
                             onClick = { difficulty = diff },
                             selected = difficulty == diff,
-                            label = { Text(text = diff.name) }
+                            label = { Text(text = stringResource(diff.stringId())) },
                         )
                     }
                 }
@@ -53,7 +53,7 @@ fun DifficultySelectDialog(
                 TextField(
                     value = problemNum.toString(),
                     onValueChange = { problemNum = it.toIntOrNull() ?: 0 },
-                    label = { Text(text = "Problem Number") }
+                    label = { Text(text = stringResource(R.string.dialog_textfield_problem_id)) }
                 )
             }
         },

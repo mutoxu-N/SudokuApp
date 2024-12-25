@@ -204,9 +204,10 @@ private fun Screen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(text = "Difficulty: ${difficulty.name}")
-                },
+                title = { Text(text = stringResource(
+                    R.string.topbar_title_difficulty,
+                    stringResource(difficulty.stringId())
+                )) },
                 navigationIcon = {
                     IconButton(onClick = { showBackDialog = true }) {
                         Icon(
@@ -303,7 +304,7 @@ private fun Screen(
             Spacer(modifier = Modifier.size(16.dp))
 
             Text(
-                "ID: $problemId",
+                stringResource(R.string.text_id_display, problemId),
                 style = MaterialTheme.typography.titleSmall,
             )
         }

@@ -22,4 +22,8 @@
     <string name="difficulty_hard">難しい</string>
     <string name="difficulty_medium">普通</string>
     <string name="difficulty_select">問題選択</string>
+    <string name="topbar_title_difficulty">難易度: %1$s</string>
+    <string name="text_id_display">問題番号: %1$d</string>
+    <string name="dialog_difficulty_title">難易度選択</string>
+    <string name="dialog_textfield_problem_id">問題番号</string>
 </resources>
