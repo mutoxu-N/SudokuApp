@@ -6,6 +6,7 @@
     <string name="button_cancel">キャンセル</string>
     <string name="button_close">閉じる</string>
     <string name="button_note">メモ</string>
+    <string name="button_ok">OK</string>
     <string name="button_reset">リセット</string>
     <string name="button_write">書き込み</string>
 
@@ -13,10 +14,12 @@
     <string name="dialog_back_title">戻る</string>
     <string name="dialog_completed">ゲームクリア！</string>
     <string name="dialog_completed_message">あなたはこの問題を解きました！</string>
+    <string name="dialog_problem_not_found">問題(ID:%1$d, 難易度:%2$s)がありません！</string>
     <string name="dialog_reset_message">本当に問題をリセットしますか？</string>
     <string name="dialog_reset_title">問題のリセット</string>
 
     <string name="difficulty_easy">簡単</string>
     <string name="difficulty_hard">難しい</string>
     <string name="difficulty_medium">普通</string>
+    <string name="difficulty_select">問題選択</string>
 </resources>

@@ -62,14 +62,17 @@ import com.github.mutoxu_n.sudoku.ui.theme.SudokuTheme
 
 class GameActivity : ComponentActivity() {
     companion object {
-        private const val ARG_PROBLEM = "problem"
+        private const val ARG_PROBLEM_ID = "problem_id"
+        private const val ARG_DIFFICULTY = "difficulty"
 
         fun launch(
             context: Context,
-            problem: String,
+            difficulty: Difficulty,
+            problemId: Int,
         ) {
             val args = Bundle()
-            args.putString(ARG_PROBLEM, problem)
+            args.putString(ARG_DIFFICULTY, difficulty.name)
+            args.putInt(ARG_PROBLEM_ID, problemId)
 
             val intent = Intent(context, GameActivity::class.java)
             intent.putExtras(args)
@@ -82,42 +85,65 @@ class GameActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val problem = intent.getStringExtra(ARG_PROBLEM)!!
+        val diffRaw = intent.getStringExtra(ARG_DIFFICULTY)!!
+        val difficulty = Difficulty.valueOf(diffRaw)
+        val problemId = intent.getIntExtra(ARG_PROBLEM_ID, 0)
+        val problem = getProblemFromId(
+            resources.openRawResource(difficulty.dataId),
+            problemId,
+        )
+
         Log.i("GameActivity", "problem: $problem")
-        val b = SudokuBoard(problem)
-
-
 
         setContent {
             SudokuTheme {
-                val board by remember { mutableStateOf(b) }
-                var cursorX by rememberSaveable { mutableIntStateOf(-1) }
-                var cursorY by rememberSaveable { mutableIntStateOf(-1) }
-                var isMemo by rememberSaveable { mutableStateOf(false) }
                 var showCompletedDialog by rememberSaveable { mutableStateOf(false) }
 
-                Screen(
-                    board = board,
-                    cursorX = cursorX,
-                    cursorY = cursorY,
-                    isMemo = isMemo,
-                    onCellClicked = { x, y ->
-                        cursorX = x
-                        cursorY = y
-                    },
-                    onNumberClicked = { x, y, n ->
-                        showCompletedDialog = board.put(x, y, n, isMemo)
-                    },
-                    onIsMemoClicked = {
-                        isMemo = it
-                    },
-                    onBackClicked = { finish() },
-                    onResetClicked = {
-                        board.reset()
-                        cursorX = -1
-                        cursorY = -1
-                    }
-                )
+                if(problem.isNotEmpty()) {
+                    val b = SudokuBoard(problem)
+                    val board by remember { mutableStateOf(b) }
+                    var cursorX by rememberSaveable { mutableIntStateOf(-1) }
+                    var cursorY by rememberSaveable { mutableIntStateOf(-1) }
+                    var isMemo by rememberSaveable { mutableStateOf(false) }
+
+                    Screen(
+                        difficulty = difficulty,
+                        problemId = problemId,
+                        board = board,
+                        cursorX = cursorX,
+                        cursorY = cursorY,
+                        isMemo = isMemo,
+                        onCellClicked = { x, y ->
+                            cursorX = x
+                            cursorY = y
+                        },
+                        onNumberClicked = { x, y, n ->
+                            showCompletedDialog = board.put(x, y, n, isMemo)
+                        },
+                        onIsMemoClicked = {
+                            isMemo = it
+                        },
+                        onBackClicked = { finish() },
+                        onResetClicked = {
+                            board.reset()
+                            cursorX = -1
+                            cursorY = -1
+                        }
+                    )
+                } else {
+                    AlertDialog(
+                        onDismissRequest = {},
+                        title = { Text(stringResource(
+                            R.string.dialog_problem_not_found, problemId, difficulty.name
+                        )) },
+                        text = {},
+                        confirmButton = {
+                            TextButton(onClick = { finish() }) {
+                                Text(stringResource(R.string.button_close))
+                            }
+                        }
+                    )
+                }
 
                 if (showCompletedDialog) {
                     AlertDialog(
@@ -143,6 +169,8 @@ class GameActivity : ComponentActivity() {
 
 @Composable
 private fun Screen(
+    difficulty: Difficulty,
+    problemId: Int,
     board: SudokuBoard,
     cursorX: Int = -1,
     cursorY: Int = -1,
@@ -168,7 +196,9 @@ private fun Screen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {},
+                title = {
+                    Text(text = "Difficulty: ${difficulty.name}")
+                },
                 navigationIcon = {
                     IconButton(onClick = { showBackDialog = true }) {
                         Icon(
@@ -260,6 +290,13 @@ private fun Screen(
                     if(cursorX == -1 || cursorY == -1) null
                     else board.getCell(cursorX, cursorY),
                 onNumberClicked = { x, y, number -> onNumberClicked(x, y, number) },
+            )
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Text(
+                "ID: $problemId",
+                style = MaterialTheme.typography.titleSmall,
             )
         }
     }
@@ -412,7 +449,9 @@ private fun ScreenPreview() {
 
     SudokuTheme {
         Screen(
-            board,
+            difficulty = Difficulty.EASY,
+            problemId = 0,
+            board = board,
             cursorX = 0,
             cursorY = 2,
             isMemo = false,

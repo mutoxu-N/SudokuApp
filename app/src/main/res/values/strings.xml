@@ -6,6 +6,7 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_close">Close</string>
     <string name="button_note">Note</string>
+    <string name="button_ok">OK</string>
     <string name="button_reset">Reset</string>
     <string name="button_write">Write</string>
 
@@ -13,10 +14,12 @@
     <string name="dialog_back_title">Quit</string>
     <string name="dialog_completed">Completed!</string>
     <string name="dialog_completed_message">You beat the problem!</string>
+    <string name="dialog_problem_not_found">Problem(%1$d of %2$s) was not found.</string>
     <string name="dialog_reset_message">Are you sure to reset board?</string>
     <string name="dialog_reset_title">Reset Board</string>
 
     <string name="difficulty_easy">Easy</string>
     <string name="difficulty_hard">Hard</string>
     <string name="difficulty_medium">Medium</string>
+    <string name="difficulty_select">Select Problem</string>
 </resources>
