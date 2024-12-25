@@ -1,6 +1,7 @@
 package com.github.mutoxu_n.sudoku
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -34,12 +35,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SudokuTheme {
+                val difficulty = App.getDifficulty()
+                Log.d("MainActivity", "difficulty: $difficulty")
+
                 Screen(
                     onLaunchButtonClicked = ::launchGame,
                     onProblemSelected = { diff, id ->
                         launchGame(diff, id)
                     },
                 )
+
+                if(difficulty != null) {
+                    val id = App.getProblemId()
+                    launchGame(difficulty, id)
+                }
             }
         }
     }

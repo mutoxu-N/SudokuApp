@@ -100,8 +100,11 @@ class GameActivity : ComponentActivity() {
                 var showCompletedDialog by rememberSaveable { mutableStateOf(false) }
 
                 if(problem.isNotEmpty()) {
-                    val b = SudokuBoard(problem)
-                    val board by remember { mutableStateOf(b) }
+                    val board by remember {
+                        val b = App.getBoardInPreference() ?: SudokuBoard(problem)
+                        App.savePreference(difficulty, problemId, b)
+                        mutableStateOf(b)
+                    }
                     var cursorX by rememberSaveable { mutableIntStateOf(-1) }
                     var cursorY by rememberSaveable { mutableIntStateOf(-1) }
                     var isMemo by rememberSaveable { mutableStateOf(false) }
@@ -119,13 +122,18 @@ class GameActivity : ComponentActivity() {
                         },
                         onNumberClicked = { x, y, n ->
                             showCompletedDialog = board.put(x, y, n, isMemo)
+                            App.savePreference(difficulty, problemId, board)
                         },
                         onIsMemoClicked = {
                             isMemo = it
                         },
-                        onBackClicked = { finish() },
+                        onBackClicked = {
+                            App.clearPreference()
+                            finish()
+                        },
                         onResetClicked = {
                             board.reset()
+                            App.savePreference(difficulty, problemId, board)
                             cursorX = -1
                             cursorY = -1
                         }

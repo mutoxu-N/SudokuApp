@@ -21,7 +21,8 @@ class SudokuCell(
     var type by mutableStateOf(SudokuCellType.EMPTY)
         private set
 
-    private var data by mutableIntStateOf(0)
+    var data by mutableIntStateOf(0)
+        private set
 
     val number: Int
         get() = if (type == SudokuCellType.EMPTY || type == SudokuCellType.MEMO) 0 else data
@@ -54,6 +55,11 @@ class SudokuCell(
             }
 
         }
+    }
+
+    fun write(type: SudokuCellType, data: Int) {
+        this.type = type
+        this.data = data
     }
 
     fun reset() {
