@@ -90,34 +90,15 @@ private fun Screen(
 
             Spacer(modifier = Modifier.size(24.dp))
 
-            // easy
-            Button(
-                modifier = Modifier
-                    .width(180.dp)
-                ,
-                onClick = { onLaunchButtonClicked(Difficulty.EASY) },
-            ) {
-                Text(text = stringResource(R.string.difficulty_easy))
-            }
-
-            // medium
-            Button(
-                modifier = Modifier
-                    .width(180.dp)
-                ,
-                onClick = { onLaunchButtonClicked(Difficulty.MEDIUM) },
-            ) {
-                Text(text = stringResource(R.string.difficulty_medium))
-            }
-
-            // hard
-            Button(
-                modifier = Modifier
-                    .width(180.dp)
-                ,
-                onClick = { onLaunchButtonClicked(Difficulty.HARD) },
-            ) {
-                Text(text = stringResource(R.string.difficulty_hard))
+            for(d in Difficulty.entries) {
+                Button(
+                    modifier = Modifier
+                        .width(180.dp)
+                    ,
+                    onClick = { onLaunchButtonClicked(d) },
+                ) {
+                    Text(text = stringResource(d.stringId()))
+                }
             }
 
             Spacer(modifier = Modifier.size(24.dp))
