@@ -26,4 +26,5 @@
     <string name="text_id_display">問題番号: %1$d</string>
     <string name="dialog_difficulty_title">難易度選択</string>
     <string name="dialog_textfield_problem_id">問題番号</string>
+    <string name="dialog_error_empty">You need to enter number.</string>
 </resources>

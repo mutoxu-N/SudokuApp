@@ -5,9 +5,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -62,14 +66,34 @@ fun DifficultySelectDialog(
                     modifier = Modifier.fillMaxWidth(),
                     value = if(problemNum == -1) "" else problemNum.toString(),
                     onValueChange = {
-                        val new = it.toIntOrNull()
-                        if(new != null) problemNum = it.toInt()
+                        if(it.isEmpty()) problemNum = -1
+                        else {
+                            val new = it.toIntOrNull()
+                            if(new != null) problemNum = it.toInt()
+                        }
                     },
                     label = { Text(text = stringResource(R.string.dialog_textfield_problem_id)) },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Decimal,
                         imeAction = ImeAction.Done,
-                    )
+                    ),
+                    isError = problemNum == -1,
+                    trailingIcon = {
+                        if(problemNum == -1) {
+                            Icon(
+                                imageVector = Icons.Default.Error,
+                                tint = MaterialTheme.colorScheme.error,
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    supportingText = {
+                        if(problemNum == -1) {
+                            Text(
+                                text = stringResource(R.string.dialog_error_empty)
+                            )
+                        }
+                    }
                 )
             }
         },

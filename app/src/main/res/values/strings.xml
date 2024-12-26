@@ -26,4 +26,5 @@
     <string name="text_id_display">ID: %1$d</string>
     <string name="dialog_difficulty_title">Select Difficulty</string>
     <string name="dialog_textfield_problem_id">Problem ID</string>
+    <string name="dialog_error_empty">You need to enter number.</string>
 </resources>
