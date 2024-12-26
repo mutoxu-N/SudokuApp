@@ -14,17 +14,19 @@
     <string name="dialog_back_title">Quit</string>
     <string name="dialog_completed">Completed!</string>
     <string name="dialog_completed_message">You beat the problem!</string>
+    <string name="dialog_difficulty_title">Select Difficulty</string>
+    <string name="dialog_error_empty">You need to enter number.</string>
     <string name="dialog_problem_not_found">Problem(%1$d of %2$s) was not found.</string>
     <string name="dialog_reset_message">Are you sure to reset board?</string>
     <string name="dialog_reset_title">Reset Board</string>
+    <string name="dialog_textfield_problem_id">Problem ID</string>
 
     <string name="difficulty_easy">Easy</string>
     <string name="difficulty_hard">Hard</string>
     <string name="difficulty_medium">Medium</string>
     <string name="difficulty_select">Select Problem</string>
-    <string name="topbar_title_difficulty">Difficulty: %1$s</string>
+
     <string name="text_id_display">ID: %1$d</string>
-    <string name="dialog_difficulty_title">Select Difficulty</string>
-    <string name="dialog_textfield_problem_id">Problem ID</string>
-    <string name="dialog_error_empty">You need to enter number.</string>
+
+    <string name="topbar_title_difficulty">Difficulty: %1$s</string>
 </resources>
