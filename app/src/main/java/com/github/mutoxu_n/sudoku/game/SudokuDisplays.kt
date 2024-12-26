@@ -204,3 +204,43 @@ fun SudokuUiPreview() {
         }
     }
 }
+
+@Preview
+@Composable
+fun SudokuIconPreview() {
+    val board = SudokuBoard(
+    "........." +
+            "........." +
+            "........." +
+            "...5....." +
+            ".....4..." +
+            "...2....." +
+            "........." +
+            "........." +
+            "........."
+    )
+    board.put(3, 4, 9, isMemo = false)
+    board.put(5, 3, 3, isMemo = false)
+
+    board.put(4, 5, 7, isMemo = true)
+    board.put(4, 5, 8, isMemo = true)
+
+    board.put(5, 5, 1, isMemo = true)
+    board.put(5, 5, 8, isMemo = true)
+
+    board.put(4, 4, 6, isMemo = false)
+
+    board.put(4, 3, 1, isMemo = true)
+    board.put(4, 3, 7, isMemo = true)
+
+
+    SudokuTheme {
+        Box(contentAlignment = Alignment.Center) {
+            SudokuUi(
+                board,
+                cursorX = -1,
+                cursorY = -1,
+            )
+        }
+    }
+}
