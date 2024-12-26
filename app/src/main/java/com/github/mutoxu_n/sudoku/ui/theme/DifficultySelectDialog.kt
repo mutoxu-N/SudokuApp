@@ -2,6 +2,7 @@ package com.github.mutoxu_n.sudoku.ui.theme
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
@@ -40,7 +41,11 @@ fun DifficultySelectDialog(
         title = { Text(text = stringResource(R.string.dialog_difficulty_title)) },
         text = {
             Column {
-                SingleChoiceSegmentedButtonRow {
+                SingleChoiceSegmentedButtonRow(
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
+                    ,
+                ) {
                     Difficulty.entries.forEachIndexed { index, diff ->
                         SegmentedButton(
                             shape = SegmentedButtonDefaults.itemShape(index, Difficulty.entries.size),
@@ -54,6 +59,7 @@ fun DifficultySelectDialog(
                 Spacer(Modifier.size(16.dp))
 
                 TextField(
+                    modifier = Modifier.fillMaxWidth(),
                     value = if(problemNum == -1) "" else problemNum.toString(),
                     onValueChange = {
                         val new = it.toIntOrNull()
