@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.github.mutoxu_n.sudoku"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.github.mutoxu_n.sudoku"
-        minSdk = 34
-        targetSdk = 34
+        minSdk = 24
+        targetSdk = 35
         versionCode = 2
         versionName = "1.1"
 
