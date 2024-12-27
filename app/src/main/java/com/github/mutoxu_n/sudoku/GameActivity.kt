@@ -189,15 +189,6 @@ private fun Screen(
     onBackClicked: () -> Unit = {},
     onResetClicked: () -> Unit = {},
 ) {
-    val colorWrite =
-        if(isMemo) MaterialTheme.colorScheme.outline
-        else MaterialTheme.colorScheme.onSurface
-
-    val colorMemo =
-        if(isMemo) MaterialTheme.colorScheme.onSurface
-        else MaterialTheme.colorScheme.outline
-
-
     var showBackDialog by remember { mutableStateOf(false) }
     var showResetDialog by remember { mutableStateOf(false) }
 
@@ -250,13 +241,11 @@ private fun Screen(
                     label = {
                         Text(
                             text = stringResource(R.string.button_write),
-                            color = colorWrite,
                         )
                     },
                     icon = {
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            tint = colorWrite,
                             contentDescription = null,
                         )
                     }
@@ -270,13 +259,11 @@ private fun Screen(
                     label = {
                         Text(
                             text = stringResource(R.string.button_note),
-                            color = colorMemo,
                         )
                     },
                     icon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.TextSnippet,
-                            tint = colorMemo,
                             contentDescription = null,
                         )
                     }
@@ -370,7 +357,7 @@ private fun NumberPad(
     Column(
         modifier = Modifier
             .background(
-                MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.secondaryContainer
             )
             .border(
                 1.dp,
@@ -403,7 +390,7 @@ private fun NumberPad(
                                 Text(
                                     text = i.toString(),
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                                     fontWeight = FontWeight.Bold,
                                 )
 
