@@ -16,8 +16,8 @@
     <string name="dialog_completed_message">あなたはこの問題を解きました！</string>
     <string name="dialog_difficulty_title">難易度選択</string>
     <string name="dialog_error_empty">問題番号を入力してください。</string>
-    <string name="dialog_problem_not_found">問題(ID:%1$d, 難易度:%2$s)がありません！</string>
-    <string name="dialog_reset_message">本当に問題をリセットしますか？</string>
+    <string name="dialog_problem_not_found">問題(難易度:%2$s, 問題番号:%1$d)がありません！</string>
+    <string name="dialog_reset_message">問題をリセットすると進捗が失われ、ゲームが初めからになります！本当に問題をリセットしますか？</string>
     <string name="dialog_reset_title">問題のリセット</string>
     <string name="dialog_textfield_problem_id">問題番号</string>
 
