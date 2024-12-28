@@ -159,7 +159,7 @@ fun SudokuCellUi(
                 Text(
                     text = cell.memoString(),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.outline,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
