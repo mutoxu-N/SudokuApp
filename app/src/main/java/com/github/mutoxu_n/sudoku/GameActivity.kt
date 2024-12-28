@@ -9,20 +9,13 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.TextSnippet
@@ -33,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MultiChoiceSegmentedButtonRow
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
@@ -52,7 +46,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mutoxu_n.sudoku.game.SudokuBoard
@@ -354,83 +347,47 @@ private fun NumberPad(
     val width = LocalConfiguration.current.screenWidthDp.dp / 10
     val l = cell?.memo()
 
-    Column(
+    MultiChoiceSegmentedButtonRow(
         modifier = Modifier
-            .background(
-                MaterialTheme.colorScheme.secondaryContainer
-            )
-            .border(
-                1.dp,
-                MaterialTheme.colorScheme.outline,
-            )
-        ,
+            .padding(horizontal = 32.dp)
+            .fillMaxWidth(1f)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            for(i in 1..9) {
-                Box(
-                    modifier = Modifier
-                        .width(width)
-                        .aspectRatio(1f)
-                        .clickable {
-                            cell?.let {
-                                onNumberClicked(it.x, it.y, i)
-                            }
-                        }
-                    ,
-                    contentAlignment = Alignment.Center,
-                ) {
-
-                    val type = cell?.type ?: SudokuCell.SudokuCellType.EMPTY
-                    when(type) {
-                        SudokuCell.SudokuCellType.MEMO -> {
-                            if(l != null && l[i-1]){
-                                Text(
-                                    text = i.toString(),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    fontWeight = FontWeight.Bold,
-                                )
-
-                            } else {
-                                Text(
-                                    text = i.toString(),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.outline,
-                                )
-                            }
-                        }
-
-                        SudokuCell.SudokuCellType.FIXED -> {
-                            if(cell != null && i == cell.number){
-                                Text(
-                                    text = i.toString(),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.error,
-                                    fontWeight = FontWeight.Bold,
-                                )
-
-                            } else {
-                                Text(
-                                    text = i.toString(),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.outline,
-                                )
-                            }
-                        }
-
-                        else -> {
-                            Text(
-                                text = i.toString(),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.outline,
-                            )
-                        }
+        for(i in 1..9) {
+            if (cell == null) false
+            SegmentedButton(
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = i - 1, count = 9,
+                ),
+                checked = when (cell?.type) {
+                    SudokuCell.SudokuCellType.MEMO -> {
+                        if (l == null) false
+                        else l[i - 1]
                     }
-                }
-            }
+
+                    SudokuCell.SudokuCellType.FIXED -> {
+                        cell.number == i
+                    }
+
+                    else -> false
+                },
+                enabled = when (cell?.type) {
+                    SudokuCell.SudokuCellType.EMPTY
+                        , SudokuCell.SudokuCellType.FIXED
+                        , SudokuCell.SudokuCellType.MEMO -> true
+                    else -> false
+                },
+                onCheckedChange = {
+                    cell?.let {
+                        onNumberClicked(it.x, it.y, i)
+                    }
+                },
+                label = {
+                    Text(
+                        text = i.toString(),
+                    )
+                },
+                icon = {}
+            )
         }
     }
 }
