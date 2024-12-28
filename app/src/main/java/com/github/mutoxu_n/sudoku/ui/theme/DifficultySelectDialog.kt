@@ -108,6 +108,7 @@ fun DifficultySelectDialog(
         confirmButton = {
             Button(
                 onClick = { onConfirm(difficulty, problemNum) },
+                enabled = problemNum != -1,
             ) {
                 Text(text = stringResource(R.string.button_ok))
             }
