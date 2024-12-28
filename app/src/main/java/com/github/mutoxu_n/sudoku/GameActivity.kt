@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
@@ -44,7 +45,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,7 +90,17 @@ class GameActivity : ComponentActivity() {
 
         setContent {
             SudokuTheme {
+                var showBackDialog by remember { mutableStateOf(false) }
                 var showCompletedDialog by rememberSaveable { mutableStateOf(false) }
+
+                // on back button pressed
+                onBackPressedDispatcher.addCallback(
+                    object: OnBackPressedCallback(true) {
+                        override fun handleOnBackPressed() {
+                            showBackDialog = true
+                        }
+                    }
+                )
 
                 if(problem.isNotEmpty()) {
                     val board by remember {
@@ -121,8 +131,7 @@ class GameActivity : ComponentActivity() {
                             isMemo = it
                         },
                         onBackClicked = {
-                            App.clearPreference()
-                            finish()
+                            showBackDialog = true
                         },
                         onResetClicked = {
                             board.reset()
@@ -146,6 +155,31 @@ class GameActivity : ComponentActivity() {
                     )
                 }
 
+                if(showBackDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showBackDialog = false },
+                        title = { Text(stringResource(R.string.dialog_back_title)) },
+                        text = { Text(stringResource(R.string.dialog_back_message)) },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                showBackDialog = false
+                                App.clearPreference()
+                                finish()
+                            }) {
+                                Text(
+                                    stringResource(R.string.button_back),
+                                    color = MaterialTheme.colorScheme.error,
+                                )
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showBackDialog = false }) {
+                                Text(stringResource(R.string.button_cancel))
+                            }
+                        }
+                    )
+                }
+
                 if (showCompletedDialog) {
                     AlertDialog(
                         onDismissRequest = { showCompletedDialog = false },
@@ -161,10 +195,6 @@ class GameActivity : ComponentActivity() {
 
             }
         }
-    }
-
-    override fun onBackPressed() {
-        if(false) super.onBackPressed()
     }
 }
 
@@ -182,7 +212,6 @@ private fun Screen(
     onBackClicked: () -> Unit = {},
     onResetClicked: () -> Unit = {},
 ) {
-    var showBackDialog by remember { mutableStateOf(false) }
     var showResetDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -193,7 +222,7 @@ private fun Screen(
                     stringResource(difficulty.stringId())
                 )) },
                 navigationIcon = {
-                    IconButton(onClick = { showBackDialog = true }) {
+                    IconButton(onClick = { onBackClicked() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = null,
@@ -288,30 +317,6 @@ private fun Screen(
                 style = MaterialTheme.typography.titleSmall,
             )
         }
-    }
-
-    if(showBackDialog) {
-        AlertDialog(
-            onDismissRequest = { showBackDialog = false },
-            title = { Text(stringResource(R.string.dialog_back_title)) },
-            text = { Text(stringResource(R.string.dialog_back_message)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    showBackDialog = false
-                    onBackClicked()
-                }) {
-                    Text(
-                        stringResource(R.string.button_back),
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showBackDialog = false }) {
-                    Text(stringResource(R.string.button_cancel))
-                }
-            }
-        )
     }
 
     if(showResetDialog) {
