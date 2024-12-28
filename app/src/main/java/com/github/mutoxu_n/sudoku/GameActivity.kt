@@ -344,16 +344,14 @@ private fun NumberPad(
     cell: SudokuCell?,
     onNumberClicked: (Int, Int, Int) -> Unit = { _, _, _ -> },
 ) {
-    val width = LocalConfiguration.current.screenWidthDp.dp / 10
     val l = cell?.memo()
 
     MultiChoiceSegmentedButtonRow(
         modifier = Modifier
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 16.dp)
             .fillMaxWidth(1f)
     ) {
         for(i in 1..9) {
-            if (cell == null) false
             SegmentedButton(
                 shape = SegmentedButtonDefaults.itemShape(
                     index = i - 1, count = 9,
