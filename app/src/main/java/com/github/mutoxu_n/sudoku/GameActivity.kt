@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
@@ -51,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import com.github.mutoxu_n.sudoku.game.SudokuBoard
 import com.github.mutoxu_n.sudoku.game.SudokuCell
 import com.github.mutoxu_n.sudoku.game.SudokuUi
+import com.github.mutoxu_n.sudoku.ui.theme.MemoryManager
 import com.github.mutoxu_n.sudoku.ui.theme.SudokuTheme
 
 class GameActivity : ComponentActivity() {
@@ -138,6 +140,42 @@ class GameActivity : ComponentActivity() {
                             App.savePreference(difficulty, problemId, board)
                             cursorX = -1
                             cursorY = -1
+                        },
+                        onLoadMemory = {
+                            val b = App.getBoardInPreference(it)
+                            if(b == null) {
+                                Toast.makeText(
+                                    this@GameActivity,
+                                    resources.getString(
+                                        R.string.toast_memory_not_found,
+                                        resources.getString(it.stringId),
+                                    ),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                            } else {
+                                board.sync(b)
+                                Toast.makeText(
+                                    this@GameActivity,
+                                    resources.getString(
+                                        R.string.toast_memory_loaded,
+                                        resources.getString(it.stringId),
+                                    ),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                        },
+                        onSaveMemory = {
+                            App.savePreference(difficulty, problemId, board, it)
+                            Toast.makeText(
+                                this@GameActivity,
+                                resources.getString(
+                                    R.string.toast_memory_saved,
+                                    resources.getString(it.stringId),
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     )
                 } else {
@@ -211,6 +249,8 @@ private fun Screen(
     onIsMemoClicked: (Boolean) -> Unit = {},
     onBackClicked: () -> Unit = {},
     onResetClicked: () -> Unit = {},
+    onLoadMemory: (MemoryType)->Unit = {},
+    onSaveMemory: (MemoryType)->Unit = {},
 ) {
     var showResetDialog by remember { mutableStateOf(false) }
 
@@ -308,6 +348,12 @@ private fun Screen(
                     if(cursorX == -1 || cursorY == -1) null
                     else board.getCell(cursorX, cursorY),
                 onNumberClicked = { x, y, number -> onNumberClicked(x, y, number) },
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+
+            MemoryManager(
+                onLoadMemory = { onLoadMemory(it) },
+                onSaveMemory = { onSaveMemory(it) },
             )
 
             Spacer(modifier = Modifier.size(16.dp))

@@ -5,9 +5,12 @@
     <string name="button_back">Back</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_close">Close</string>
+    <string name="button_load">Load</string>
+    <string name="button_memory">Memory</string>
     <string name="button_note">Note</string>
     <string name="button_ok">OK</string>
     <string name="button_reset">Reset</string>
+    <string name="button_save">Save</string>
     <string name="button_write">Write</string>
 
     <string name="dialog_back_message">Are you sure to back to title screen? Data will be lost!</string>
@@ -16,6 +19,12 @@
     <string name="dialog_completed_message">You beat the problem!</string>
     <string name="dialog_difficulty_title">Select Difficulty</string>
     <string name="dialog_error_empty">You need to enter number.</string>
+    <string name="dialog_memory_caution_load">* \"Load\" will replace current board.</string>
+    <string name="dialog_memory_caution_save">* \"Save\" will replace existing memory.</string>
+    <string name="dialog_memory_text_load">Select memory to load.</string>
+    <string name="dialog_memory_text_operation_type">Select saving or loading memory.</string>
+    <string name="dialog_memory_text_save">Select memory for saving current board.</string>
+    <string name="dialog_memory_title">Memory Manager</string>
     <string name="dialog_problem_not_found">Problem(%1$d of %2$s) was not found.</string>
     <string name="dialog_reset_message">Current progress will be lost! Are you sure to reset board?</string>
     <string name="dialog_reset_title">Reset Board</string>
@@ -26,7 +35,17 @@
     <string name="difficulty_medium">Medium</string>
     <string name="difficulty_select">Select Problem</string>
 
+    <string name="memory_1">Memory 1</string>
+    <string name="memory_2">Memory 2</string>
+    <string name="memory_3">Memory 3</string>
+    <string name="memory_4">Memory 4</string>
+    <string name="memory_5">Memory 5</string>
+
     <string name="text_id_display">Problem ID: %1$d</string>
+
+    <string name="toast_memory_loaded">\"%1$s\" was loaded!</string>
+    <string name="toast_memory_not_found">\"%1$s\" was not found!</string>
+    <string name="toast_memory_saved">\"%1$s\" was saved!</string>
 
     <string name="topbar_title_difficulty">Difficulty: %1$s</string>
 </resources>

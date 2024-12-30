@@ -1,5 +1,6 @@
 package com.github.mutoxu_n.sudoku.game
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 
 class SudokuBoard(private val problem: String) {
@@ -50,5 +51,14 @@ class SudokuBoard(private val problem: String) {
         board[posY*9 + posX].setData(value, isMemo)
 
         return board.count { it.number == 0 } == 0
+    }
+
+    fun sync(board: SudokuBoard) {
+        for (i in 0 until 81) {
+            this.board[i].write(
+                board.getCell(i % 9, i / 9).type,
+                board.getCell(i % 9, i / 9).data,
+            )
+        }
     }
 }

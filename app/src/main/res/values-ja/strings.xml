@@ -5,9 +5,12 @@
     <string name="button_back">戻る</string>
     <string name="button_cancel">キャンセル</string>
     <string name="button_close">閉じる</string>
+    <string name="button_load">読み込み</string>
+    <string name="button_memory">メモリ</string>
     <string name="button_note">メモ</string>
     <string name="button_ok">OK</string>
     <string name="button_reset">リセット</string>
+    <string name="button_save">保存</string>
     <string name="button_write">書き込み</string>
 
     <string name="dialog_back_message">本当にタイトル画面に戻りますか？ゲームの内容は保存されません！</string>
@@ -16,6 +19,12 @@
     <string name="dialog_completed_message">あなたはこの問題を解きました！</string>
     <string name="dialog_difficulty_title">難易度選択</string>
     <string name="dialog_error_empty">問題番号を入力してください。</string>
+    <string name="dialog_memory_caution_load">* メモリを読み込むと現在の進捗状況が上書きされます。</string>
+    <string name="dialog_memory_caution_save">* メモリに保存すると、メモリのデータは上書きされます。</string>
+    <string name="dialog_memory_text_load">読み込むメモリを選んでください。</string>
+    <string name="dialog_memory_text_operation_type">メモリを読み込むか、メモリへ保存するか選択してください。</string>
+    <string name="dialog_memory_text_save">現在の状況を保存するメモリを選んでください。</string>
+    <string name="dialog_memory_title">メモリ管理</string>
     <string name="dialog_problem_not_found">問題(難易度:%2$s, 問題番号:%1$d)がありません！</string>
     <string name="dialog_reset_message">問題をリセットすると進捗が失われ、ゲームが初めからになります！本当に問題をリセットしますか？</string>
     <string name="dialog_reset_title">問題のリセット</string>
@@ -26,7 +35,17 @@
     <string name="difficulty_medium">普通</string>
     <string name="difficulty_select">問題選択</string>
 
+    <string name="memory_1">メモリ1</string>
+    <string name="memory_2">メモリ2</string>
+    <string name="memory_3">メモリ3</string>
+    <string name="memory_4">メモリ4</string>
+    <string name="memory_5">メモリ5</string>
+
     <string name="text_id_display">問題番号: %1$d</string>
+
+    <string name="toast_memory_loaded">「%1$s」を読み込みました！</string>
+    <string name="toast_memory_not_found">「%1$s」が見つかりません！</string>
+    <string name="toast_memory_saved">「%1$s」へ保存しました！</string>
 
     <string name="topbar_title_difficulty">難易度: %1$s</string>
 </resources>
