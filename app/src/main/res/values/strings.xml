@@ -19,8 +19,8 @@
     <string name="dialog_completed_message">You beat the problem!</string>
     <string name="dialog_difficulty_title">Select Difficulty</string>
     <string name="dialog_error_empty">You need to enter number.</string>
-    <string name="dialog_memory_caution_load">* \"Load\" will replace current board.</string>
-    <string name="dialog_memory_caution_save">* \"Save\" will replace existing memory.</string>
+    <string name="dialog_memory_caution_load">\"Load\" will replace current board.</string>
+    <string name="dialog_memory_caution_save">\"Save\" will replace existing memory.</string>
     <string name="dialog_memory_text_load">Select memory to load.</string>
     <string name="dialog_memory_text_operation_type">Select saving or loading memory.</string>
     <string name="dialog_memory_text_save">Select memory for saving current board.</string>

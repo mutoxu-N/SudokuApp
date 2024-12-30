@@ -123,8 +123,10 @@ private fun MemoryManagerDialog(
                         }
                     )
                 }
+                if(isLoad) Text(text = stringResource(R.string.dialog_memory_caution_load))
+                else Text(text = stringResource(R.string.dialog_memory_caution_save))
 
-                Spacer(modifier = Modifier.size(8.dp))
+                Spacer(modifier = Modifier.size(16.dp))
                 if(isLoad) Text(stringResource(R.string.dialog_memory_text_load))
                 else Text(stringResource(R.string.dialog_memory_text_save))
 
@@ -141,10 +143,6 @@ private fun MemoryManagerDialog(
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
                         },
-                        supportingText = {
-                            if(isLoad) Text(text = stringResource(R.string.dialog_memory_caution_load))
-                            else Text(text = stringResource(R.string.dialog_memory_caution_save))
-                        }
                     )
 
                     ExposedDropdownMenu(
