@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.TextSnippet
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,7 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MultiChoiceSegmentedButtonRow
-import androidx.compose.material3.OutlinedIconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -270,10 +269,9 @@ private fun Screen(
                     }
                 },
                 actions = {
-                    OutlinedIconButton(onClick = { showResetDialog = true}) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = null,
+                    OutlinedButton(onClick = { showResetDialog = true}) {
+                        Text(
+                            text = stringResource(R.string.button_reset),
                         )
                     }
                 }
