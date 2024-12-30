@@ -6,7 +6,7 @@
     <string name="button_cancel">キャンセル</string>
     <string name="button_close">閉じる</string>
     <string name="button_load">読み込み</string>
-    <string name="button_memory">メモリ</string>
+    <string name="button_memory">一時保存</string>
     <string name="button_note">メモ</string>
     <string name="button_ok">OK</string>
     <string name="button_reset">リセット</string>
