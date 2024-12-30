@@ -136,7 +136,9 @@ private fun MemoryManagerDialog(
                     onExpandedChange = { isExpanded = !isExpanded },
                 ) {
                     OutlinedTextField(
-                        modifier = Modifier.menuAnchor(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
                         readOnly = true,
                         value = stringResource(memoryType.stringId),
                         onValueChange = {},
@@ -146,6 +148,8 @@ private fun MemoryManagerDialog(
                     )
 
                     ExposedDropdownMenu(
+                        modifier = Modifier
+                            .fillMaxWidth(),
                         expanded = isExpanded,
                         onDismissRequest = { isExpanded = false }
                     ) {
