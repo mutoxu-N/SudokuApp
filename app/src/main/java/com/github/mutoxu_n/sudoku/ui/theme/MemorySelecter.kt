@@ -170,7 +170,10 @@ private fun MemoryManagerDialog(
         },
         confirmButton = {
             Row {
-                Button(onClick = { onLoadMemory(memoryType) }) {
+                Button(onClick = {
+                    if(isLoad) onLoadMemory(memoryType)
+                    else onSaveMemory(memoryType)
+                }) {
                     Text(stringResource(R.string.button_ok))
                 }
             }

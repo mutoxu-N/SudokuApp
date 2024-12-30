@@ -1,6 +1,5 @@
 package com.github.mutoxu_n.sudoku.game
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 
 class SudokuBoard(private val problem: String) {
